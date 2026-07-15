@@ -1,0 +1,28 @@
+{
+  "name": "stamp",
+  "displayName": "stamp",
+  "description": "Insert and convert timestamps: ISO/Unix now, and convert a selected Unix or ISO value between formats.",
+  "version": "1.0.0",
+  "publisher": "juninmd",
+  "license": "MIT",
+  "engines": { "vscode": "^1.75.0" },
+  "categories": ["Other"],
+  "main": "./extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      { "command": "stamp.insertIso", "title": "stamp: Inserir data/hora ISO" },
+      { "command": "stamp.insertUnix", "title": "stamp: Inserir Unix (segundos)" },
+      { "command": "stamp.convert", "title": "stamp: Converter seleção (Unix ↔ ISO)" }
+    ],
+    "keybindings": [
+      { "command": "stamp.convert", "key": "ctrl+alt+t", "when": "editorTextFocus" }
+    ]
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
