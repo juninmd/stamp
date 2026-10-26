@@ -13,6 +13,7 @@ async function convertSelection() {
   const editor = vscode.window.activeTextEditor;
   if (!editor) return;
   const sel = editor.selection;
+  const version = editor.document.version;
   const raw = editor.document.getText(sel);
   if (!raw.trim()) {
     vscode.window.showInformationMessage("stamp: selecione um Unix ou uma data ISO primeiro.");
@@ -32,7 +33,13 @@ async function convertSelection() {
     ],
     { placeHolder: `Detectado: ${conv.kind} — escolha o formato de saída` },
   );
-  if (pick) editor.edit((b) => b.replace(sel, pick.label));
+  if (!pick) return;
+  if (editor.document.version !== version) {
+    vscode.window.showWarningMessage("stamp: o documento mudou durante a escolha; seleção não substituída.");
+    return;
+  }
+  const ok = await editor.edit((b) => b.replace(sel, pick.label));
+  if (!ok) vscode.window.showWarningMessage("stamp: não foi possível aplicar a edição.");
 }
 
 function activate(context) {
