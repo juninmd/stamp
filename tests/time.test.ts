@@ -35,3 +35,15 @@ test("detectAndConvert returns null for junk", () => {
   expect(detectAndConvert("not a date")).toBeNull();
   expect(detectAndConvert("")).toBeNull();
 });
+
+test("nowFormats defaults to the current time and rejects invalid dates", () => {
+  expect(nowFormats().unixMs).toBeGreaterThan(0);
+  expect(() => nowFormats(new Date("nope"))).toThrow(RangeError);
+});
+
+test("detectAndConvert rejects short numbers and year-less text", () => {
+  expect(detectAndConvert("5")).toBeNull();
+  expect(detectAndConvert("123456")).toBeNull();
+  expect(detectAndConvert("Jan 5")).toBeNull();
+  expect(detectAndConvert("2026-07-15")?.kind).toBe("iso");
+});
